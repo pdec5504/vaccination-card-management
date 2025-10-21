@@ -13,7 +13,7 @@ if (
   !process.env.DB_PORT ||
   !dbNameTest
 ) {
-  throw new Error("Missing test database environment variables in .env!");
+  throw new Error("Missing test database environment variables in .env file.");
 }
 const MONGO_URI_TEST = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}:${process.env.DB_PORT}/${dbNameTest}?authSource=admin`;
 
