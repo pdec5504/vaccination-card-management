@@ -14,6 +14,20 @@ const userSchema = new Schema(
       required: [true, "User name is mandatory."],
       trim: true,
     },
+    age: {
+      type: Number,
+      required: false,
+      min: [0, "Age cannot be negative."],
+    },
+    gender: {
+      type: String,
+      required: false,
+      enum: {
+        values: ["Male", "Female", "Other", "Not informed"],
+        message: "{VALUE} is not a valid gender.",
+      },
+      default: "Not informed",
+    },
   },
   {
     timestamps: true,

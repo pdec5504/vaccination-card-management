@@ -5,7 +5,7 @@ const { v4: uuidv4 } = require("uuid");
 // Register new user
 const registerUser = async (req, res) => {
   try {
-    const { name } = req.body;
+    const { name, age, gender } = req.body;
     if (!name) {
       return res.status(400).json({ message: "Name is mandatory." });
     }
@@ -13,11 +13,18 @@ const registerUser = async (req, res) => {
     const newUser = new User({
       id: uuidv4(),
       name,
+      age,
+      gender,
     });
 
     await newUser.save();
     res.status(201).json(newUser);
   } catch (error) {
+    if (error.name === "ValidationError") {
+      return res
+        .status(400)
+        .json({ message: "Validation error.", details: error.message });
+    }
     res
       .status(500)
       .json({ message: "Error registering user.", error: error.message });
