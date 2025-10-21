@@ -43,8 +43,6 @@ afterAll(async () => {
 });
 
 describe("API - Vaccines Module (/api/vaccines)", () => {
-  //
-
   it("Should create a new vaccine successfully (POST)", async () => {
     const newVaccineData = {
       name: "COVID-19", //
