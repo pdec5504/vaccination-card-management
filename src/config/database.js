@@ -1,18 +1,24 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 
-const isTestEnvironment = procces.env.NODE_ENV === "test";
+const isTestEnvironment = process.env.NODE_ENV === "test";
 
-const MONGO_URI = isTestEnvironment
-  ? procces.env.MONGO_URI_TEST
-  : `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}?authSource=admin`;
+const dbName = isTestEnvironment
+  ? process.env.DB_NAME_TEST
+  : process.env.DB_NAME;
 
-if (!MONGO_URI) {
-  console.error(
-    "ERROR: MONGO_URI not defined. Verify .env file or tests configuration."
-  );
-  procces.exit(1);
+if (
+  !process.env.DB_USER ||
+  !process.env.DB_PASS ||
+  !process.env.DB_HOST ||
+  !process.env.DB_PORT ||
+  !dbName
+) {
+  console.error("Configuration Error: Variables on .env file are missing.");
+  process.exit(1);
 }
+
+const MONGO_URI = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}:${process.env.DB_PORT}/${dbName}?authSource=admin`;
 
 const connectDB = async () => {
   try {
