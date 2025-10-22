@@ -4,6 +4,7 @@ import UserPage from "./pages/UserPage";
 import Modal from "./components/common/Modal";
 import RegisterUserForm from "./components/RegisterUserForm";
 import RegisterVaccinationForm from "./components/RegisterVaccinationForm";
+import RegisterVaccineForm from "./components/RegisterVaccineForm";
 import {
   fetchUsers,
   fetchVaccines,
@@ -12,6 +13,8 @@ import {
   registerVaccination,
   deleteUser,
   deleteVaccination,
+  registerVaccine,
+  fetchUserById,
 } from "./services/api";
 import "./App.css";
 
@@ -26,6 +29,8 @@ function App() {
   const [showRegisterUserModal, setShowRegisterUserModal] = useState(false);
   const [showRegisterVaccinationModal, setShowRegisterVaccinationModal] =
     useState(false);
+  const [showRegisterVaccineModal, setShowRegisterVaccineModal] =
+    useState(false);
   const [selectedVaccineInfo, setSelectedVaccineInfo] = useState(null);
 
   useEffect(() => {
@@ -35,10 +40,9 @@ function App() {
         const vaccines = await fetchVaccines();
         setAllVaccines(vaccines || []);
         setError(null);
-      } catch (err) {
-        console.error("Failed to load vaccines:", err);
+      } catch (error) {
+        console.error("Failed to load vaccines:", error);
         setError("Failed to load vaccine list. Is the backend running?");
-      } finally {
       }
     };
     loadVaccines();
@@ -150,6 +154,24 @@ function App() {
     }
   };
 
+  const handleRegisterVaccine = async (vaccineData) => {
+    console.log("handleRegisterVaccine called with:", vaccineData); // Log 1
+    try {
+      const newVaccine = await registerVaccine(vaccineData);
+      console.log("API call successful, new vaccine:", newVaccine); // Log 2
+      setShowRegisterVaccineModal(false);
+      alert(`Vaccine ${newVaccine.name} registered successfully!`); // <-- O alerta que não aparece
+      setAllVaccines((prevVaccines) => [...prevVaccines, newVaccine]);
+    } catch (err) {
+      console.error("Error caught in handleRegisterVaccine:", err); // Log 3
+      if (err.message.includes("Duplicated error")) {
+        alert(`Error: A vaccine with this name might already exist.`);
+      } else {
+        alert(`Failed to register vaccine: ${err.message}`);
+      }
+    }
+  };
+
   const handleRegisterVaccination = async (vaccinationData) => {
     try {
       await registerVaccination(vaccinationData);
@@ -187,7 +209,7 @@ function App() {
     setSelectedVaccineInfo(vaccine);
   };
 
-  if (loading && !currentUser) {
+  if (loading && !currentUser && !selectedUserId) {
     return <div>Carregando...</div>;
   }
 
@@ -203,6 +225,7 @@ function App() {
         <HomePage
           onRegisterClick={() => setShowRegisterUserModal(true)}
           onViewUserClick={(userId) => setSelectedUserId(userId)}
+          onRegisterVaccineClick={() => setShowRegisterVaccineModal(true)}
         />
       ) : (
         <UserPage
@@ -243,6 +266,17 @@ function App() {
             onCancel={() => setShowRegisterVaccinationModal(false)}
           />
         )}
+      </Modal>
+
+      <Modal
+        isOpen={showRegisterVaccineModal}
+        onClose={() => setShowRegisterVaccineModal(false)}
+        title="Register New Vaccine"
+      >
+        <RegisterVaccineForm
+          onSubmit={handleRegisterVaccine}
+          onCancel={() => setShowRegisterVaccineModal(false)}
+        />
       </Modal>
 
       <Modal
