@@ -16,7 +16,8 @@ function RegisterUserForm({ onSubmit, onCancel }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
+      <div className="form-group">
+        {" "}
         <label htmlFor="name">Nome:</label>
         <input
           type="text"
@@ -26,7 +27,8 @@ function RegisterUserForm({ onSubmit, onCancel }) {
           required
         />
       </div>
-      <div>
+      <div className="form-group">
+        {" "}
         <label htmlFor="age">Idade:</label>
         <input
           type="number"
@@ -36,22 +38,23 @@ function RegisterUserForm({ onSubmit, onCancel }) {
           min="0"
         />
       </div>
-      <div>
+      <div className="form-group">
+        {" "}
         <label htmlFor="gender">Sexo:</label>
         <select
           id="gender"
           value={gender}
           onChange={(e) => setGender(e.target.value)}
-        >
-          <option value="Not informed">Não informado</option>
-          <option value="Male">Masculino</option>
-          <option value="Female">Feminino</option>
-          <option value="Other">Outro</option>
-        </select>
+        ></select>
       </div>
-      <div>
-        <button type="submit">Cadastrar</button>
-        <button type="button" onClick={onCancel}>
+      <div className="form-actions">
+        {" "}
+        <button type="submit" className="btn btn-primary">
+          {" "}
+          Cadastrar
+        </button>
+        <button type="button" className="btn btn-secondary" onClick={onCancel}>
+          {" "}
           Cancelar
         </button>
       </div>

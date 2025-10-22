@@ -14,28 +14,35 @@ function UserPage({
 }) {
   return (
     <div>
-      <button onClick={onBack} style={{ marginBottom: "20px" }}>
-        &larr; Voltar para a tela anterior
+      <button
+        className="btn btn-secondary"
+        onClick={onBack}
+        style={{ marginBottom: "20px" }}
+      >
+        {" "}
+        &larr; Voltar para Lista de Usuários
       </button>
 
       <UserInfo user={user} />
 
       <div style={{ marginBottom: "20px" }}>
         <button
+          className="btn btn-primary"
           onClick={onRegisterVaccinationClick}
-          style={{ marginRight: "10px" }}
         >
           Cadastrar Vacinação
         </button>
         <button
+          className="btn btn-danger"
           onClick={() => {
             if (
-              window.confirm(`Tem certeza que deseja remover ${user?.name}?`)
+              window.confirm(
+                `Tem certeza que deseja remover ${user?.name}? Esta ação não pode ser desfeita.`
+              )
             ) {
               onDeleteUserClick(user.id);
             }
           }}
-          style={{ backgroundColor: "#dc3545", color: "white" }}
         >
           Remover Usuário
         </button>

@@ -33,10 +33,14 @@ function HomePage({
   return (
     <div>
       <div style={{ marginBottom: "20px" }}>
-        <button onClick={onRegisterClick} style={{ marginRight: "10px" }}>
+        <button className="btn btn-primary" onClick={onRegisterClick}>
+          {" "}
           Cadastrar Usuário
         </button>
-        <button onClick={onRegisterVaccineClick}>Cadastrar Vacina</button>
+        <button className="btn btn-secondary" onClick={onRegisterVaccineClick}>
+          {" "}
+          Cadastrar Vacina
+        </button>
       </div>
 
       <h2>Usuários</h2>
@@ -52,11 +56,22 @@ function HomePage({
         ) : (
           <ul style={{ listStyle: "none", padding: 0 }}>
             {users.map((user) => (
-              <li key={user.id} style={{ marginBottom: "10px" }}>
-                <span>{user.name}</span>
+              <li
+                key={user.id}
+                style={{
+                  marginBottom: "10px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: "10px",
+                  border: "1px solid var(--btg-border)",
+                  borderRadius: "4px",
+                }}
+              >
+                <span style={{ fontWeight: "500" }}>{user.name}</span>
                 <button
+                  className="btn btn-secondary"
                   onClick={() => onViewUserClick(user.id)}
-                  style={{ marginLeft: "10px" }}
                 >
                   Exibir Cartão
                 </button>

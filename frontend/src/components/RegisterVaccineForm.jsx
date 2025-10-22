@@ -20,7 +20,7 @@ function RegisterVaccineForm({ onSubmit, onCancel }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
+      <div className="form-group">
         <label htmlFor="vaccineName">Nome da Vacina:</label>
         <input
           type="text"
@@ -30,7 +30,7 @@ function RegisterVaccineForm({ onSubmit, onCancel }) {
           required
         />
       </div>
-      <div>
+      <div className="form-group">
         <label htmlFor="totalDoses">Total de Doses:</label>
         <input
           type="number"
@@ -41,9 +41,11 @@ function RegisterVaccineForm({ onSubmit, onCancel }) {
           required
         />
       </div>
-      <div>
-        <button type="submit">Cadastrar Vacina</button>
-        <button type="button" onClick={onCancel}>
+      <div className="form-actions">
+        <button type="submit" className="btn btn-primary">
+          Cadastrar Vacina
+        </button>
+        <button type="button" className="btn btn-secondary" onClick={onCancel}>
           Cancelar
         </button>
       </div>

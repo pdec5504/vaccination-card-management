@@ -54,32 +54,21 @@ function VaccinationGrid({
   const handleHeaderClick = (vaccine) => {
     if (onHeaderClick) {
       onHeaderClick(vaccine);
-      // alert(`Vaccine: ${vaccine.name}\nTotal Doses: ${vaccine.totalDoses}`);
     }
   };
 
   return (
     <div className="vaccination-card">
       <h2>Carteira Nacional de Vacinação</h2>
-      <table
-        border="1"
-        style={{
-          borderCollapse: "collapse",
-          width: "100%",
-          textAlign: "center",
-        }}
-      >
+      <table>
         <thead>
           <tr>
             <th style={{ width: "100px" }}>Vacinas / Doses</th>
             {vaccines.map((vaccine) => (
               <th
                 key={vaccine.id}
-                // className="vertical"
                 style={{
                   cursor: onHeaderClick ? "pointer" : "default",
-                  minWidth: "100px",
-                  padding: "5px",
                 }}
                 onClick={() => handleHeaderClick(vaccine)}
                 title={`Clique para ver a informações de ${vaccine.name}`}
@@ -103,7 +92,7 @@ function VaccinationGrid({
                 const isApplied = !!vaccinationInfo;
                 const cellClass = isApplied ? "applied" : "";
                 const cellStyle =
-                  isApplied && onDeleteClick ? { cursor: "pointer " } : {};
+                  isApplied && onDeleteClick ? { cursor: "pointer" } : {};
 
                 return (
                   <td

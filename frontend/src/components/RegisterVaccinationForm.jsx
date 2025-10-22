@@ -42,10 +42,17 @@ function RegisterVaccinationForm({
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        Usuário: <strong>{user?.name}</strong>
+      <div className="form-group">
+        <label>Usuário:</label>
+        <input
+          type="text"
+          value={user?.name || ""}
+          readOnly
+          disabled
+          style={{ backgroundColor: "#eee" }}
+        />
       </div>
-      <div>
+      <div className="form-group">
         <label htmlFor="vaccine">Vacina:</label>
         <select
           id="vaccine"
@@ -63,7 +70,7 @@ function RegisterVaccinationForm({
           ))}
         </select>
       </div>
-      <div>
+      <div className="form-group">
         <label htmlFor="dose">Dose:</label>
         <select
           id="dose"
@@ -78,10 +85,11 @@ function RegisterVaccinationForm({
           ))}
         </select>
       </div>
-      {/* Date */}
-      <div>
-        <button type="submit">Cadatrar vacinação</button>
-        <button type="button" onClick={onCancel}>
+      <div className="form-actions">
+        <button type="submit" className="btn btn-primary">
+          Cadastrar Vacinação
+        </button>
+        <button type="button" className="btn btn-secondary" onClick={onCancel}>
           Cancelar
         </button>
       </div>
