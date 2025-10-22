@@ -54,7 +54,12 @@
 .modal-body form div {
   margin-bottom: 0;
 }
-.modal-body form label,
+
+.modal-body form label {
+  display: block;
+  margin-bottom: 5px;
+}
+/* .modal-body form label,
 .modal-body form input,
 .modal-body form select,
 .modal-body form button {
@@ -65,4 +70,4 @@
   border: none;
   border-radius: 0;
   margin-right: 0;
-}
+} */
