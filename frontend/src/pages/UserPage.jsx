@@ -8,7 +8,7 @@ function UserPage({
   vaccines,
   onBack,
   onRegisterVaccinationClick,
-  onDeletePersonClick,
+  onDeleteUserClick,
   onDeleteVaccinationRecordClick,
   onVaccineNameClick,
 }) {
@@ -32,7 +32,7 @@ function UserPage({
             if (
               window.confirm(`Are you sure you want to delete ${user?.name}?`)
             ) {
-              onDeletePersonClick(user.id);
+              onDeleteUserClick(user.id);
             }
           }}
           style={{ backgroundColor: "#dc3545", color: "white" }}
