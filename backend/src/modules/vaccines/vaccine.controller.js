@@ -58,4 +58,61 @@ const getVaccineById = async (req, res) => {
   }
 };
 
-module.exports = { registerVaccine, getVaccines, getVaccineById };
+// Delete a vaccine
+const deleteVaccine = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedVaccine = await Vaccine.findOneAndDelete({ id: id });
+
+    if (!deletedVaccine) {
+      return res.status(404).json({ message: "Vaccine not found." });
+    }
+
+    await Vaccination.deleteMany({ vaccineId: id });
+
+    res.status(200).json({
+      message:
+        "Vaccine and associated vaccination records deleted successfully.",
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error deleting vaccine.", error: error.message });
+  }
+};
+
+// Update a vaccine
+const updateVaccine = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, totalDoses } = req.body;
+
+    const updatedVaccine = await Vaccine.findOneAndUpdate(
+      { id: id },
+      { name, totalDoses },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedVaccine) {
+      return res.status(404).json({ message: "Vaccine not found." });
+    }
+    res.status(200).json(updatedVaccine);
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      return res
+        .status(400)
+        .json({ message: "Validation error.", details: error.message });
+    }
+    res
+      .status(500)
+      .json({ message: "Error updating vaccine.", error: error.message });
+  }
+};
+
+module.exports = {
+  registerVaccine,
+  getVaccines,
+  getVaccineById,
+  deleteVaccine,
+  updateVaccine,
+};

@@ -6,6 +6,10 @@ const controller = require("./vaccine.controller");
 router.route("/").post(controller.registerVaccine).get(controller.getVaccines);
 
 // /api/vaccines/id
-router.route("/:id").get(controller.getVaccineById);
+router
+  .route("/:id")
+  .get(controller.getVaccineById)
+  .delete(controller.deleteVaccine)
+  .put(controller.updateVaccine);
 
 module.exports = router;
