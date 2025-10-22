@@ -2,7 +2,7 @@ import react from "react";
 
 function UserInfo({ user }) {
   if (!user) {
-    return <div>Loading user information...</div>;
+    return <div>Carregando informações do usuário...</div>;
   }
 
   return (

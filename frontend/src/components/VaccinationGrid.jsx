@@ -8,18 +8,46 @@ const DOSE_ROWS = [
   "Single Dose",
 ];
 
-function VaccinationGrid({ vaccines = [], userCard = null }) {
+function VaccinationGrid({
+  vaccines = [],
+  userCard = null,
+  onDeleteClick,
+  onHeaderClick,
+}) {
   if (!userCard || vaccines.length === 0) {
-    return <div>Loading vaccination card...</div>;
+    return <div>Carregando cartão de vacinação...</div>;
   }
 
   const getVaccinationInfo = (vaccineId, doseName) => {
     if (!userCard || !userCard.card) return null;
+    const vaccine = vaccines.find((v) => v.id === vaccineId);
     return userCard.card.find(
       (record) =>
-        record.vaccineName === vaccines.find((v) => v.id === vaccineId)?.name &&
-        record.dose === doseName
+        record.vaccineName === vaccine?.name && record.dose === doseName
     );
+  };
+
+  const handleCellClick = (vaccinationInfo) => {
+    if (vaccinationInfo && onDeleteClick) {
+      if (
+        window.confirm(
+          `Delete vaccination record for ${vaccinationInfo.vaccineName} (${
+            vaccinationInfo.dose
+          }) applied on ${new Date(
+            vaccinationInfo.applicationDate
+          ).toLocaleDateString("pt-BR")}?`
+        )
+      ) {
+        onDeleteClick(vaccinationInfo.vaccinationId);
+      }
+    }
+  };
+
+  const handleHeaderClick = (vaccine) => {
+    if (onHeaderClick) {
+      onHeaderClick(vaccine);
+      // alert(`Vaccine: ${vaccine.name}\nTotal Doses: ${vaccine.totalDoses}`);
+    }
   };
 
   return (
@@ -39,12 +67,14 @@ function VaccinationGrid({ vaccines = [], userCard = null }) {
             {vaccines.map((vaccine) => (
               <th
                 key={vaccine.id}
+                // className="vertical"
                 style={{
+                  cursor: onHeaderClick ? "pointer" : "default",
                   minWidth: "100px",
                   padding: "5px",
-                  writingMode: "vertical-rl",
-                  textOrientation: "mixed",
                 }}
+                onClick={() => handleHeaderClick(vaccine)}
+                title={`Clique para ver a informações de ${vaccine.name}`}
               >
                 {vaccine.name}
               </th>
@@ -61,12 +91,24 @@ function VaccinationGrid({ vaccines = [], userCard = null }) {
                   doseName
                 );
                 const isApplied = !!vaccinationInfo;
-                const cellStyle = isApplied
-                  ? { backgroundColor: "#d3d3d3" }
-                  : {};
+                const cellClass = isApplied ? "applied" : "";
+                const cellStyle =
+                  isApplied && onDeleteClick ? { cursor: "pointer " } : {};
 
                 return (
-                  <td key={`${vaccine.id} - ${doseName}`} style={cellStyle}>
+                  <td
+                    key={`${vaccine.id} - ${doseName}`}
+                    className={cellClass}
+                    style={cellStyle}
+                    onClick={() => handleCellClick(vaccinationInfo)}
+                    title={
+                      isApplied
+                        ? `Clique para gerenciar o registro (Aplicaçã: ${new Date(
+                            vaccinationInfo.applicationDate
+                          ).toLocaleDateString("pt-BR")})`
+                        : ""
+                    }
+                  >
                     {isApplied
                       ? new Date(
                           vaccinationInfo.applicationDate
