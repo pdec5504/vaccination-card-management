@@ -1,9 +1,18 @@
 import react from "react";
 
+const GENDER_TRANSLATION = {
+  Male: "Masculino",
+  Female: "Feminino",
+  Other: "Outro",
+  "Not informed": "Não informado",
+};
+
 function UserInfo({ user }) {
   if (!user) {
     return <div>Carregando informações do usuário...</div>;
   }
+
+  const translatedGender = GENDER_TRANSLATION[user.gender] || user.gender || "";
 
   return (
     <div
@@ -38,7 +47,7 @@ function UserInfo({ user }) {
           Sexo:
           <input
             type="text"
-            value={user.gender || ""}
+            value={translatedGender}
             readOnly
             style={{ marginLeft: "5px" }}
           />

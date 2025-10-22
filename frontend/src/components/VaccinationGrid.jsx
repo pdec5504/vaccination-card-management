@@ -1,12 +1,20 @@
 import React from "react";
 
-const DOSE_ROWS = [
+const DOSE_ROWS_VALUES = [
   "1st Dose",
   "2nd Dose",
   "3rd Dose",
   "Reinforcement Dose",
   "Single Dose",
 ];
+
+const DOSE_DISPLAY_NAMES = {
+  "1st Dose": "1ª Dose",
+  "2nd Dose": "2ª Dose",
+  "3rd Dose": "3ª Dose",
+  "Reinforcement Dose": "Reforço",
+  "Single Dose": "Dose Única",
+};
 
 function VaccinationGrid({
   vaccines = [],
@@ -18,12 +26,12 @@ function VaccinationGrid({
     return <div>Carregando cartão de vacinação...</div>;
   }
 
-  const getVaccinationInfo = (vaccineId, doseName) => {
+  const getVaccinationInfo = (vaccineId, doseNameValue) => {
     if (!userCard || !userCard.card) return null;
     const vaccine = vaccines.find((v) => v.id === vaccineId);
     return userCard.card.find(
       (record) =>
-        record.vaccineName === vaccine?.name && record.dose === doseName
+        record.vaccineName === vaccine?.name && record.dose === doseNameValue
     );
   };
 
@@ -31,9 +39,9 @@ function VaccinationGrid({
     if (vaccinationInfo && onDeleteClick) {
       if (
         window.confirm(
-          `Delete vaccination record for ${vaccinationInfo.vaccineName} (${
+          `Remover registro de ${vaccinationInfo.vaccineName} (${
             vaccinationInfo.dose
-          }) applied on ${new Date(
+          }) aplicada em ${new Date(
             vaccinationInfo.applicationDate
           ).toLocaleDateString("pt-BR")}?`
         )
@@ -82,13 +90,15 @@ function VaccinationGrid({
           </tr>
         </thead>
         <tbody>
-          {DOSE_ROWS.map((doseName) => (
-            <tr key={doseName}>
-              <td style={{ fontWeight: "bold" }}>{doseName}</td>
+          {DOSE_ROWS_VALUES.map((doseValue) => (
+            <tr key={doseValue}>
+              <td style={{ fontWeight: "bold" }}>
+                {DOSE_DISPLAY_NAMES[doseValue] || doseValue}
+              </td>
               {vaccines.map((vaccine) => {
                 const vaccinationInfo = getVaccinationInfo(
                   vaccine.id,
-                  doseName
+                  doseValue
                 );
                 const isApplied = !!vaccinationInfo;
                 const cellClass = isApplied ? "applied" : "";
@@ -97,13 +107,13 @@ function VaccinationGrid({
 
                 return (
                   <td
-                    key={`${vaccine.id} - ${doseName}`}
+                    key={`${vaccine.id} - ${doseValue}`}
                     className={cellClass}
                     style={cellStyle}
                     onClick={() => handleCellClick(vaccinationInfo)}
                     title={
                       isApplied
-                        ? `Clique para gerenciar o registro (Aplicaçã: ${new Date(
+                        ? `Clique para gerenciar o registro (Aplicação: ${new Date(
                             vaccinationInfo.applicationDate
                           ).toLocaleDateString("pt-BR")})`
                         : ""

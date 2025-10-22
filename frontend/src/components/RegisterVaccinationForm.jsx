@@ -1,12 +1,20 @@
 import React, { useState } from "react";
 
-const DOSE_OPTIONS = [
+const DOSE_OPTIONS_VALUES = [
   "1st Dose",
   "2nd Dose",
   "3rd Dose",
-  "Single Dose",
   "Reinforcement Dose",
+  "Single Dose",
 ];
+
+const DOSE_DISPLAY_NAMES = {
+  "1st Dose": "1ª Dose",
+  "2nd Dose": "2ª Dose",
+  "3rd Dose": "3ª Dose",
+  "Reinforcement Dose": "Reforço",
+  "Single Dose": "Dose Única",
+};
 
 function RegisterVaccinationForm({
   user,
@@ -17,12 +25,12 @@ function RegisterVaccinationForm({
   const [selectedVaccineId, setSelectedVaccineId] = useState(
     allVaccines[0]?.id || ""
   );
-  const [selectedDose, setSelectedDose] = useState(DOSE_OPTIONS[0]);
+  const [selectedDose, setSelectedDose] = useState(DOSE_OPTIONS_VALUES[0]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!selectedVaccineId || !selectedDose) {
-      alert("Please select a vaccine and dose.");
+      alert("Por favor, selecione uma vacina e a dose.");
       return;
     }
     onSubmit({
@@ -63,9 +71,9 @@ function RegisterVaccinationForm({
           onChange={(e) => setSelectedDose(e.target.value)}
           required
         >
-          {DOSE_OPTIONS.map((dose) => (
-            <option key={dose} value={dose}>
-              {dose}
+          {DOSE_OPTIONS_VALUES.map((doseValue) => (
+            <option key={doseValue} value={doseValue}>
+              {DOSE_DISPLAY_NAMES[doseValue] || doseValue}
             </option>
           ))}
         </select>

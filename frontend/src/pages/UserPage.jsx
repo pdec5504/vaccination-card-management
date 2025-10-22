@@ -30,7 +30,7 @@ function UserPage({
         <button
           onClick={() => {
             if (
-              window.confirm(`Are you sure you want to delete ${user?.name}?`)
+              window.confirm(`Tem certeza que deseja remover ${user?.name}?`)
             ) {
               onDeleteUserClick(user.id);
             }

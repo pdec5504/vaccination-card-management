@@ -17,9 +17,11 @@ function HomePage({
         const fetchedUsers = await fetchUsers();
         setUsers(fetchedUsers || []);
         setError(null);
-      } catch (err) {
-        setError("Failed to load users. Check if backend is running.");
-        console.error(err);
+      } catch (error) {
+        setError(
+          "Falha ao carregar usuários. Verifique se o backend está funcionando."
+        );
+        console.error(error);
         setUsers([]);
       } finally {
         setLoading(false);

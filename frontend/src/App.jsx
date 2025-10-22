@@ -41,62 +41,14 @@ function App() {
         setAllVaccines(vaccines || []);
         setError(null);
       } catch (error) {
-        console.error("Failed to load vaccines:", error);
-        setError("Failed to load vaccine list. Is the backend running?");
+        console.error("Falha ao carregar vacinas:", error);
+        setError(
+          "Falha ao carregar lista de vacinas. Verifique se o backend está funcionando."
+        );
       }
     };
     loadVaccines();
   }, []);
-
-  // useEffect(() => {
-  //   const loadInitialData = async () => {
-  //     try {
-  //       setLoading(true);
-  //       setError(null);
-
-  //       const users = await fetchUsers();
-  //       let targetUserId = null;
-  //       if (users && users.length > 0) {
-  //         targetUserId = users[0].id;
-  //         setCurrentUser(users[0]);
-  //       } else {
-  //         console.warn("No users found in the database.");
-  //       }
-
-  //       const vaccines = await fetchVaccines();
-  //       setAllVaccines(vaccines || []);
-
-  //       if (targetUserId) {
-  //         const cardData = await fetchUserCard(targetUserId);
-
-  //         if (cardData && cardData.user) {
-  //           setCurrentUser(cardData.user);
-  //           setUserCard(cardData);
-  //         } else {
-  //           setUserCard(null);
-  //           if (users && users.length > 0 && users[0].id === targetUserId) {
-  //             setCurrentUser(users[0]);
-  //           } else {
-  //             setCurrentUser(null);
-  //           }
-  //           console.warn(
-  //             `Vaccination card for user ${targetUserId} not found.`
-  //           );
-  //         }
-  //       } else {
-  //         setCurrentUser(null);
-  //         setUserCard(null);
-  //       }
-  //     } catch (error) {
-  //       console.error("Failed to load initial data:", err);
-  //       setError("Failed to load data. Check if the backend is running.");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   loadInitialData();
-  // }, []);
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -120,16 +72,19 @@ function App() {
           setUserCard(null);
           if (basicUser) {
             console.warn(
-              `Vaccination card for user ${selectedUserId} not found, but user exists.`
+              `Cartão de vacinação para usuário ${selectedUserId} não encontrado, mas usuário existe.`
             );
           } else {
-            console.warn(`User with ID ${selectedUserId} not found.`);
+            console.warn(`Usuário com ID ${selectedUserId} não encontrado.`);
             setSelectedUserId(null);
           }
         }
-      } catch (err) {
-        console.error(`Failed to load data for user ${selectedUserId}:`, err);
-        setError(`Failed to load user data: ${err.message}`);
+      } catch (error) {
+        console.error(
+          `Falha ao carregar dados para usuário ${selectedUserId}:`,
+          error
+        );
+        setError(`Falha ao carregar dados do usuário: ${error.message}`);
         setCurrentUser(null);
         setUserCard(null);
         setSelectedUserId(null);
@@ -147,27 +102,24 @@ function App() {
     try {
       const newUser = await registerUser(userData);
       setShowRegisterUserModal(false);
-      alert(`User ${newUser.name} registered successfully!`);
+      alert(`Usuário ${newUser.name} cadastrado com sucesso!`);
       setSelectedUserId(newUser.id);
-    } catch (err) {
-      alert(`Failed to register user: ${err.message}`);
+    } catch (error) {
+      alert(`Falha ao cadastrar usuário: ${error.message}`);
     }
   };
 
   const handleRegisterVaccine = async (vaccineData) => {
-    console.log("handleRegisterVaccine called with:", vaccineData); // Log 1
     try {
       const newVaccine = await registerVaccine(vaccineData);
-      console.log("API call successful, new vaccine:", newVaccine); // Log 2
       setShowRegisterVaccineModal(false);
-      alert(`Vaccine ${newVaccine.name} registered successfully!`); // <-- O alerta que não aparece
+      alert(`Vacina ${newVaccine.name} cadastrada com sucesso!`);
       setAllVaccines((prevVaccines) => [...prevVaccines, newVaccine]);
-    } catch (err) {
-      console.error("Error caught in handleRegisterVaccine:", err); // Log 3
-      if (err.message.includes("Duplicated error")) {
-        alert(`Error: A vaccine with this name might already exist.`);
+    } catch (error) {
+      if (error.message.includes("Duplicated error")) {
+        alert(`erroro: Uma vacina com este nome pode já existir.`);
       } else {
-        alert(`Failed to register vaccine: ${err.message}`);
+        alert(`Falha ao cadastrar vacina: ${error.message}`);
       }
     }
   };
@@ -176,32 +128,32 @@ function App() {
     try {
       await registerVaccination(vaccinationData);
       setShowRegisterVaccinationModal(false);
-      alert("Vaccination registered successfully!");
+      alert("Vacinação registrada com sucesso!");
       const updatedCard = await fetchUserCard(selectedUserId);
       setUserCard(updatedCard);
-    } catch (err) {
-      alert(`Failed to register vaccination: ${err.message}`);
+    } catch (error) {
+      alert(`Falha ao registrar vacinação: ${error.message}`);
     }
   };
 
   const handleDeleteUser = async (userId) => {
     try {
       await deleteUser(userId);
-      alert("User deleted successfully.");
+      alert("Usuário removido com sucesso.");
       setSelectedUserId(null);
-    } catch (err) {
-      alert(`Failed to delete user: ${err.message}`);
+    } catch (error) {
+      alert(`Falha ao remover usuário: ${error.message}`);
     }
   };
 
   const handleDeleteVaccinationRecord = async (vaccinationId) => {
     try {
       await deleteVaccination(vaccinationId);
-      alert("Vaccination record deleted successfully.");
+      alert("Registro de vacinação removido com sucesso.");
       const updatedCard = await fetchUserCard(selectedUserId);
       setUserCard(updatedCard);
-    } catch (err) {
-      alert(`Failed to delete vaccination record: ${err.message}`);
+    } catch (error) {
+      alert(`Falha ao remover registro de vacinação: ${error.message}`);
     }
   };
 
@@ -214,7 +166,7 @@ function App() {
   }
 
   if (error) {
-    return <div style={{ color: "red" }}>Error: {error}</div>;
+    return <div style={{ color: "red" }}>Erro: {error}</div>;
   }
 
   return (
@@ -245,7 +197,7 @@ function App() {
       <Modal
         isOpen={showRegisterUserModal}
         onClose={() => setShowRegisterUserModal(false)}
-        title="Register New User"
+        title="Cadastrar Novo Usuário"
       >
         <RegisterUserForm
           onSubmit={handleRegisterUser}
@@ -256,7 +208,7 @@ function App() {
       <Modal
         isOpen={showRegisterVaccinationModal && currentUser}
         onClose={() => setShowRegisterVaccinationModal(false)}
-        title="Register New Vaccination"
+        title="Cadastrar Nova Vacinação"
       >
         {currentUser && (
           <RegisterVaccinationForm
@@ -271,7 +223,7 @@ function App() {
       <Modal
         isOpen={showRegisterVaccineModal}
         onClose={() => setShowRegisterVaccineModal(false)}
-        title="Register New Vaccine"
+        title="Cadastrar Nova Vacina"
       >
         <RegisterVaccineForm
           onSubmit={handleRegisterVaccine}
@@ -282,19 +234,19 @@ function App() {
       <Modal
         isOpen={!!selectedVaccineInfo}
         onClose={() => setSelectedVaccineInfo(null)}
-        title={`Vaccine Details: ${selectedVaccineInfo?.name}`}
+        title={`Detalhes da vacina: ${selectedVaccineInfo?.name}`}
       >
         {selectedVaccineInfo && (
           <div>
             <p>
-              <strong>Name:</strong> {selectedVaccineInfo.name}
+              <strong>Nome:</strong> {selectedVaccineInfo.name}
             </p>
             <p>
-              <strong>Total Doses Required:</strong>{" "}
+              <strong>Total de doses necessárias:</strong>{" "}
               {selectedVaccineInfo.totalDoses}
             </p>
             <button type="button" onClick={() => setSelectedVaccineInfo(null)}>
-              Close
+              Fechar
             </button>
           </div>
         )}

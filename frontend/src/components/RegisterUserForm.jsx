@@ -8,7 +8,7 @@ function RegisterUserForm({ onSubmit, onCancel }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (!name) {
-      alert("Name is mandatory.");
+      alert("O nome é obrigatório.");
       return;
     }
     onSubmit({ name, age: age ? parseInt(age, 10) : undefined, gender });
