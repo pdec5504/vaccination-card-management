@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { fetchUsers } from "../services/api";
 
-function HomePage({ onRegisterClick, onViewUserClick }) {
+function HomePage({
+  onRegisterClick,
+  onViewUserClick,
+  onRegisterVaccineClick,
+}) {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,7 +18,7 @@ function HomePage({ onRegisterClick, onViewUserClick }) {
         setUsers(fetchedUsers || []);
         setError(null);
       } catch (err) {
-        setError("Failed to load users. Is the backend running?");
+        setError("Failed to load users. Check if backend is running.");
         console.error(err);
         setUsers([]);
       } finally {
@@ -26,11 +30,11 @@ function HomePage({ onRegisterClick, onViewUserClick }) {
 
   return (
     <div>
-      {/* <h1>Gerenciador de Cartão de Vacinação</h1> */}
       <div style={{ marginBottom: "20px" }}>
         <button onClick={onRegisterClick} style={{ marginRight: "10px" }}>
           Cadastrar Usuário
         </button>
+        <button onClick={onRegisterVaccineClick}>Cadastrar Vacina</button>
       </div>
 
       <h2>Usuários</h2>
