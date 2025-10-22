@@ -80,6 +80,8 @@ const getUserCard = async (req, res) => {
       user: {
         id: user.id,
         name: user.name,
+        age: user.age,
+        gender: user.gender,
       },
       card: viewCard,
     });
