@@ -60,7 +60,7 @@ const getUserById = async (req, res) => {
   }
 };
 
-// Remove a user
+// Remove an user
 const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -79,4 +79,42 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, getUsers, getUserById, deleteUser };
+// update an user
+const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, age, gender } = req.body;
+
+    const updatedUser = await User.findOneAndUpdate(
+      { id: id },
+      { name, age, gender },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      return res
+        .status(400)
+        .json({ message: "Validation error.", details: error.message });
+    }
+    res
+      .status(500)
+      .json({ message: "Error updating user.", error: error.message });
+  }
+};
+
+module.exports = {
+  registerUser,
+  getUsers,
+  getUserById,
+  deleteUser,
+  updateUser,
+};
