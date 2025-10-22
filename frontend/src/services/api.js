@@ -139,12 +139,9 @@ export const fetchUserCard = async (userId) => {
 
 export const deleteVaccination = async (vaccinationId) => {
   try {
-    const response = await fetch(
-      `${API_BASE_URL}/vaccinations/${vaccinationId}`,
-      {
-        method: "DELETE",
-      }
-    );
+    const response = await fetch(`${API_URL}/vaccinations/${vaccinationId}`, {
+      method: "DELETE",
+    });
     return await handleResponse(response);
   } catch (error) {
     handleError(error, `deleting vaccination ${vaccinationId}`);
