@@ -245,9 +245,16 @@ function App() {
               <strong>Total de doses necessárias:</strong>{" "}
               {selectedVaccineInfo.totalDoses}
             </p>
-            <button type="button" onClick={() => setSelectedVaccineInfo(null)}>
-              Fechar
-            </button>
+            <div className="form-actions">
+              {" "}
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => setSelectedVaccineInfo(null)}
+              >
+                Fechar
+              </button>
+            </div>
           </div>
         )}
       </Modal>
