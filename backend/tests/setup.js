@@ -23,7 +23,7 @@ module.exports = async () => {
   const MONGO_URI_TEST = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}:${process.env.DB_PORT}/${dbNameTest}?authSource=admin`;
 
   try {
-    console.log("[Global Setup] Connectiong to test database.");
+    console.log("[Global Setup] Connecting to test database.");
     await mongoose.connect(MONGO_URI_TEST);
     console.log("[Global Setup] Test database succesfully connected.");
   } catch (error) {

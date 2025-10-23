@@ -32,6 +32,7 @@ beforeAll(async () => {
 beforeEach(async () => {
   try {
     await User.deleteMany({});
+    // await Vaccine.deleteMany({});
     await Vaccination.deleteMany({});
   } catch (error) {
     console.error("Error during beforeEach cleanup:", error);
@@ -45,8 +46,6 @@ afterAll(async () => {
 });
 
 describe("API - Users Module (/api/users)", () => {
-  //
-
   it("Should create a new user successfully (POST)", async () => {
     const newUserData = {
       name: "Ana Silva",
@@ -137,5 +136,66 @@ describe("API - Users Module (/api/users)", () => {
 
     expect(response.statusCode).toBe(404);
     expect(response.body.message).toBe("User not found.");
+  });
+
+  it("Should update an existing user successfully (PUT /:id)", async () => {
+    const user = await User.create({
+      id: uuidv4(),
+      name: "Old Name",
+      age: 25,
+      gender: "Male",
+    });
+
+    const updateData = {
+      name: "New Name",
+      age: 30,
+      gender: "Female",
+    };
+
+    const response = await request(app)
+      .put(`/api/users/${user.id}`)
+      .send(updateData);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.name).toBe("New Name");
+    expect(response.body.age).toBe(30);
+    expect(response.body.gender).toBe("Female");
+
+    const userInDB = await User.findOne({ id: user.id });
+    expect(userInDB.name).toBe("New Name");
+    expect(userInDB.age).toBe(30);
+  });
+
+  it("Should return 404 when updating a non-existent user (PUT /:id)", async () => {
+    const nonExistentId = uuidv4();
+    const updateData = { name: "Unknow User" };
+
+    const response = await request(app)
+      .put(`/api/users/${nonExistentId}`)
+      .send(updateData);
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body.message).toBe("User not found.");
+  });
+
+  it("Should return 400 when updating with invalid data (e.g., invalid gender) (PUT /:id)", async () => {
+    const user = await User.create({
+      id: uuidv4(),
+      name: "Valid Name",
+      age: 25,
+      gender: "Male",
+    });
+
+    const invalidUpdateData = {
+      name: "Updated Name",
+      gender: "InvalidGender",
+    };
+
+    const response = await request(app)
+      .put(`/api/users/${user.id}`)
+      .send(invalidUpdateData);
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.message).toBe("Validation error.");
   });
 });
