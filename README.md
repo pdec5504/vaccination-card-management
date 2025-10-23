@@ -149,6 +149,9 @@ npm run dev
 
 This sequence starts MongoDB and the backend service via Docker Compose in detached mode, then launches the backend in development mode (`nodemon`) and the frontend Vite dev server. The frontend expects the backend API to be available (default backend port `3000`) — update `frontend/src/services/api.js` if needed.
 
+#### Tip
+if "[nodemon] app crashed" error shows up, reload the server typing rs untill is fixed.
+
 ## Configuration (.env)
 
 The backend uses environment variables via `dotenv`. An example file is `backend/.env.example`:
