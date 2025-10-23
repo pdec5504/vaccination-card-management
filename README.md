@@ -206,3 +206,11 @@ Use the frontend, Postman, or curl.
 - Frontend can't reach backend: check backend is running and confirm the API base URL in `frontend/src/services/api.js`.
 - MongoDB Docker errors: try removing `backend/mongo-data` if the data directory is corrupt or run with a fresh volume.
 - Jest tests failing: ensure no existing MongoDB instance is blocking test ports; tests use in-memory MongoDB and should not require external DB.
+
+## System UI
+
+![alt text](image.png)
+
+![alt text](image-1.png)
+
+![alt text](image-2.png)
