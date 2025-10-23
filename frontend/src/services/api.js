@@ -59,6 +59,19 @@ export const fetchUserById = async (userId) => {
   }
 };
 
+export const updateUser = async (userId, userData) => {
+  try {
+    const response = await fetch(`${API_URL}/users/${userId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(userData),
+    });
+    return await handleResponse(response);
+  } catch (error) {
+    handleError(error, `updating user ${userId}`);
+  }
+};
+
 export const deleteUser = async (userId) => {
   try {
     const response = await fetch(`${API_URL}/users/${userId}`, {
@@ -105,6 +118,30 @@ export const fetchVaccineById = async (vaccineId) => {
     return await handleResponse(response);
   } catch (error) {
     handleError(error, `fetching vaccine ${vaccineId}`);
+  }
+};
+
+export const updateVaccine = async (vaccineId, vaccineData) => {
+  try {
+    const response = await fetch(`${API_URL}/vaccines/${vaccineId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(vaccineData),
+    });
+    return await handleResponse(response);
+  } catch (error) {
+    handleError(error, `updating vaccine ${vaccineId}`);
+  }
+};
+
+export const deleteVaccine = async (vaccineId) => {
+  try {
+    const response = await fetch(`${API_URL}/vaccines/${vaccineId}`, {
+      method: "DELETE",
+    });
+    return await handleResponse(response);
+  } catch (error) {
+    handleError(error, `deleting vaccine ${vaccineId}`);
   }
 };
 
