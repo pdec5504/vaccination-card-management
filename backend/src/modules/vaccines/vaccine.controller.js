@@ -1,4 +1,5 @@
 const Vaccine = require("./vaccine.model");
+const Vaccination = require("../vaccinations/vaccination.model");
 const { v4: uuidv4 } = require("uuid");
 
 // Register new vaccine
