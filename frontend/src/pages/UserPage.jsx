@@ -11,6 +11,7 @@ function UserPage({
   onDeleteUserClick,
   onDeleteVaccinationRecordClick,
   onVaccineNameClick,
+  onEditUserClick,
 }) {
   return (
     <div>
@@ -19,13 +20,12 @@ function UserPage({
         onClick={onBack}
         style={{ marginBottom: "20px" }}
       >
-        {" "}
         &larr; Voltar para Lista de Usuários
       </button>
 
       <UserInfo user={user} />
 
-      <div style={{ marginBottom: "20px" }}>
+      <div style={{ marginBottom: "20px", display: "flex", gap: "10px" }}>
         <button
           className="btn btn-primary"
           onClick={onRegisterVaccinationClick}
@@ -33,16 +33,23 @@ function UserPage({
           Cadastrar Vacinação
         </button>
         <button
+          className="btn btn-secondary"
+          onClick={() => onEditUserClick(user)}
+        >
+          Editar Informações
+        </button>
+        <button
           className="btn btn-danger"
           onClick={() => {
             if (
               window.confirm(
-                `Tem certeza que deseja remover ${user?.name}? Esta ação não pode ser desfeita.`
+                `Tem certeza que deseja remover ${user?.name}? Esta ação não pode ser desfeita e removerá também o cartão de vacinação associado.`
               )
             ) {
               onDeleteUserClick(user.id);
             }
           }}
+          style={{ marginLeft: "auto" }}
         >
           Remover Usuário
         </button>
