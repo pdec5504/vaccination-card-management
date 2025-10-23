@@ -1,6 +1,6 @@
 # Vaccination Card Management
 
-A small full-stack application that manages users' vaccination cards. It includes a Node.js + Express backend (with MongoDB via Mongoose) and a React frontend powered by Vite. The backend contains tests (Jest + Supertest) and uses dotenv for configuration.
+A small full-stack application that manages users' vaccination cards. It includes a Node.js + Express backend (with MongoDB via Mongoose) and a React frontend powered by Vite. The backend contains tests (Jest + Supertest and Selenium for UI) and uses dotenv for configuration.
 
 ## Table of contents
 
@@ -27,6 +27,94 @@ This repository contains two main folders:
 
 The app allows creating users, defining vaccines, and recording vaccinations. It's intended as a coding challenge / demo implementation.
 
+## Functional Requirements (FR)
+
+These are the requirements that define the actions the system must perform.
+
+### FR01: Vaccine Management (Vaccine Types)
+
+- FR01.1: Register Vaccine:
+
+Description: The system must allow the registration of a new vaccine type.
+
+Input: Vaccine Name (e.g., "Hepatitis B"), Unique Identifier (e.g., "HEP-B").
+
+Output: Registration confirmation or error message (e.g., if the ID already exists).
+
+- FR01.2: Get Vaccines:
+
+Description: Although not explicitly requested, to register a vaccination (FR03.1), we need to know which vaccines exist. The system must allow listing all registered vaccines.
+
+Input: (None)
+
+Output: List of vaccines (ID and Name).
+
+### FR02: Person Management
+
+- FR02.1: Register User:
+
+Description: The system must allow the registration of a new user.
+
+Input: Name (e.g., "Maria Silva"), Unique Identification Number (e.g., a national ID or a generated ID).
+
+Output: Registration confirmation or error message (e.g., if the ID already exists).
+
+- FR02.2: Remove User:
+
+Description: The system must allow the removal of a registered user.
+
+Input: The User's Unique Identifier.
+
+Output: Removal confirmation.
+
+- FR02.3 (Business Rule): Cascade Deletion:
+
+Description: When executing FR02.2 (Remove Person), the system must automatically delete their entire vaccination card and all vaccination records associated with that person.
+
+### FR03: Vaccination Card Management (Records)
+
+- FR03.1: Register Vaccination Record:
+
+Description: The system must allow recording that a person has received a vaccine.
+
+Input: User ID, Vaccine ID, Dose Applied, Date of Application.
+
+Output: Registration confirmation.
+
+- FR03.2 (Business Rule): Dose Validation:
+
+Description: When executing FR03.1, the "Dose Applied" field must be validated by the system.
+
+- FR03.3: Get Vaccination Card:
+
+Description: The system must allow querying all vaccination records for a specific user.
+
+Input: User ID.
+
+Output: A list containing the details of each vaccination (Vaccine Name, Date of Application, Dose Received).
+
+- FR03.4: Delete Vaccination Record:
+
+Description: The system must allow the deletion of a specific vaccination record from a user's card.
+
+Input: User ID and the Vaccination Record ID (we need a unique ID for each vaccination event).
+
+Output: Deletion confirmation.
+
+## Non-Functional Requirements (NFR)
+
+These are the requirements that define the technical qualities and constraints of the system.
+
+- NFR01: Communication Format: All communication between the client and the API must be done using the JSON format.
+
+- NFR02: Architecture: The API must follow REST principles.
+
+- NFR03: Testability: The code should be covered by unit tests (Encouraged).
+
+- NFR04: Security: The implementation of authentication on the API is a bonus (Optional).
+
+- NFR05: Data Integrity: The system must ensure that Unique Identifiers for Person (FR02.1) and Vaccine (FR01.1) cannot be duplicated.
+
 ## Architecture
 
 - Backend: Node (Express) + Mongoose. Entry point: `backend/src/server.js`.
@@ -43,7 +131,7 @@ The app allows creating users, defining vaccines, and recording vaccinations. It
 
 Start the application with Docker Compose, then run both development servers for backend and frontend.
 
-```powershell
+```cmd
 cd backend
 docker-compose up -d
 
@@ -78,11 +166,11 @@ Create a `backend/.env` file (copy `.env.example`) and adjust values for your en
 ## Backend (tests & tips)
 
 - Dependencies: `express`, `mongoose`, `dotenv`, `cors`, `uuid`.
-- DevDependencies: `jest`, `supertest`, `mongodb-memory-server`, `nodemon`.
+- DevDependencies: `jest`, `supertest`, `nodemon`.
 
 Running tests:
 
-```powershell
+```cmd
 cd backend
 npm test
 ```
