@@ -133,6 +133,9 @@ Start the application with Docker Compose, then run both development servers for
 
 ```cmd
 cd backend
+# remove possible containers defined in docker-compose.yml
+docker-compose down
+
 docker-compose up -d
 
 # in a new terminal (backend dev)
